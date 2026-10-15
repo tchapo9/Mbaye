@@ -295,7 +295,8 @@ TEMPLATE = """
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TP1 — Scan réseau enrichi par IA</title>
+<title>TP1 Scan réseau enrichi par IA</title>
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='moustique.png') }}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -344,7 +345,9 @@ TEMPLATE = """
   .logo {
     width:38px; height:38px; border-radius:12px; background:var(--grad);
     display:grid; place-items:center; color:#fff; flex:none;
+    overflow:hidden; padding:3px;
   }
+  .logo img { width:100%; height:100%; object-fit:contain; display:block; }
   .brand h1 { font-size:15.5px; font-weight:600; margin:0; white-space:nowrap;
     overflow:hidden; text-overflow:ellipsis; }
   .brand p { margin:1px 0 0; font-size:12px; color:var(--muted); }
@@ -496,7 +499,14 @@ TEMPLATE = """
   .err {
     background:var(--err-bg); color:var(--err-tx); border-radius:12px;
     padding:10px 14px; font-size:13px; line-height:1.5;
+    display:flex; align-items:flex-start; gap:8px;
   }
+  .err svg { flex:none; margin-top:1px; }
+  .ico-p {
+    width:16px; height:16px; vertical-align:-3px; margin-right:5px;
+    color:var(--accent); flex:none;
+  }
+  .chip-ghost svg { flex:none; }
   .typing {
     display:flex; gap:5px; padding:12px 16px; background:var(--soft);
     border-radius:18px; width:fit-content;
@@ -645,17 +655,22 @@ TEMPLATE = """
 <header class="appbar">
   <div class="brand">
     <div class="logo">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2l1.9 5.6L19.5 9l-4.4 3.6L16 18l-4-2.8L8 18l.9-5.4L4.5 9l5.6-1.4z"/>
-      </svg>
+      <img src="{{ url_for('static', filename='moustique.png') }}"
+           alt="Logo de l'application — moustique">
     </div>
     <div>
-      <h1>TP1 — Scan réseau enrichi par IA</h1>
+      <h1>TP1 Scan réseau enrichi par IA</h1>
       <p>Carnet pédagogique · Laboratoire EC2LT</p>
     </div>
   </div>
   <span class="chip-ghost" title="Seule la cible du laboratoire est scannable">
-    🔒 Liste blanche : {{ cibles | join(' · ') }}
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+         stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="10.5" width="16" height="10.5" rx="2.5"/>
+      <path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/>
+      <path d="M12 14.5v3"/>
+    </svg>
+    Liste blanche : {{ cibles | join(' · ') }}
   </span>
 </header>
 
@@ -749,27 +764,55 @@ TEMPLATE = """
         </div>
         <div class="bubble">
           <div class="msg-meta"><strong>Assistant IA</strong><span class="tag">TP1 · EC2LT</span></div>
-          <p>Bonjour 👋 Je suis l'assistant pédagogique de ce carnet de scan.
+          <p><svg class="ico-p" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7.5 13.5V6.4a1.4 1.4 0 0 1 2.8 0v5.6"/>
+            <path d="M10.3 12V4.6a1.4 1.4 0 0 1 2.8 0v7.4"/>
+            <path d="M13.1 12V5.4a1.4 1.4 0 0 1 2.8 0v6.6"/>
+            <path d="M15.9 13V8.4a1.4 1.4 0 0 1 2.8 0V15"/>
+            <path d="M7.5 13.5v2A6.5 6.5 0 0 0 14 22h1.9a5.6 5.6 0 0 0 5.6-5.6v-3"/>
+            <path d="M7.5 14.4l-2 3a1.6 1.6 0 0 0 2.7 1.7l1.4-2.1"/>
+          </svg>Bonjour ! Je suis l'assistant pédagogique de ce carnet de scan.
           Chaque port ouvert détecté par Nmap devient une <strong>source</strong>
           sélectionnable dans le panneau de gauche.</p>
           {% if resultats %}
-          <p>👉 Posez-moi une question sur les services détectés, ou
+          <p><svg class="ico-p" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5H4l2.3-2.3A8.5 8.5 0 1 1 21 11.5z"/>
+            <path d="M8.5 11h7M8.5 14.5h4.5"/>
+          </svg>Posez-moi une question sur les services détectés, ou
           cochez/décochez les sources à prendre en compte.</p>
           {% else %}
-          <p>👉 Lancez d'abord un scan sur la cible autorisée pour charger
+          <p><svg class="ico-p" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/>
+            <path d="M12 12l6.4-6.4"/>
+          </svg>Lancez d'abord un scan sur la cible autorisée pour charger
           les sources, puis revenez discuter ici.</p>
           {% endif %}
         </div>
       </div>
 
       {% if erreur %}
-      <div class="msg msg-systeme"><div class="err">⚠️ {{ erreur }}</div></div>
+      <div class="msg msg-systeme">
+        <div class="err">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+          </svg>
+          <span>{{ erreur }}</span>
+        </div>
+      </div>
       {% endif %}
 
       {% if resultats is not none and resultats|length == 0 %}
       <div class="msg msg-systeme">
-        <div class="err">Le scan ne rapporte aucun port ouvert : hôte
-        injoignable, hors ligne, ou pare-feu filtrant tout le scan.</div>
+        <div class="err">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+          </svg>
+          <span>Le scan ne rapporte aucun port ouvert : hôte
+          injoignable, hors ligne, ou pare-feu filtrant tout le scan.</span>
+        </div>
       </div>
       {% endif %}
 
@@ -920,6 +963,13 @@ TEMPLATE = """
     '<div class="avatar"><svg width="16" height="16" viewBox="0 0 24 24" ' +
     'fill="currentColor"><path d="M12 2l1.9 5.6L19.5 9l-4.4 3.6L16 18l-4-2.8' +
     'L8 18l.9-5.4L4.5 9l5.6-1.4z"/></svg></div>';
+  var ICO_ERR =
+    '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">' +
+    '<path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/></svg>';
+  var ICO_OK =
+    '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" ' +
+    'stroke="currentColor" stroke-width="2.4" stroke-linecap="round" ' +
+    'stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>';
 
   function bulle(role, contenuHtml, metaHtml) {
     var wrap = document.createElement('div');
@@ -928,7 +978,8 @@ TEMPLATE = """
       wrap.innerHTML = '<div class="bubble">' + contenuHtml + '</div>';
     } else if (role === 'systeme') {
       wrap.className = 'msg msg-systeme';
-      wrap.innerHTML = '<div class="err">' + contenuHtml + '</div>';
+      wrap.innerHTML = '<div class="err">' + ICO_ERR + '<span>' +
+        contenuHtml + '</span></div>';
     } else {
       wrap.className = 'msg msg-assistant';
       wrap.innerHTML = AVATAR +
@@ -975,7 +1026,7 @@ TEMPLATE = """
       var data = await r.json();
       indicateur.remove();
       if (data.erreur) {
-        bulle('systeme', '⚠️ ' + esc(data.erreur));
+        bulle('systeme', esc(data.erreur));
       } else {
         bulle('assistant', data.reponse_html,
               '<strong>Assistant IA</strong><span class="tag">' + inclus.length +
@@ -984,7 +1035,7 @@ TEMPLATE = """
       }
     } catch (err) {
       indicateur.remove();
-      bulle('systeme', '⚠️ Impossible de joindre le serveur (' + esc(String(err)) + ').');
+      bulle('systeme', 'Impossible de joindre le serveur (' + esc(String(err)) + ').');
     } finally {
       enCours = false;
       sendBtn.classList.remove('busy');
@@ -1028,7 +1079,7 @@ TEMPLATE = """
       var doc = document.getElementById('doc-synthese');
       if (!doc || !navigator.clipboard) return;
       navigator.clipboard.writeText(doc.innerText).then(function () {
-        copie.textContent = 'Copié ✓';
+        copie.innerHTML = ICO_OK + ' Copié';
         setTimeout(function () { copie.textContent = 'Copier'; }, 1500);
       });
     });
