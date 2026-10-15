@@ -343,9 +343,8 @@ TEMPLATE = """
   }
   .brand { display:flex; align-items:center; gap:12px; min-width:0; }
   .logo {
-    width:38px; height:38px; border-radius:12px; background:var(--grad);
-    display:grid; place-items:center; color:#fff; flex:none;
-    overflow:hidden; padding:3px;
+    width:38px; height:38px; border-radius:12px; flex:none;
+    display:grid; place-items:center; overflow:hidden;
   }
   .logo img { width:100%; height:100%; object-fit:contain; display:block; }
   .brand h1 { font-size:15.5px; font-weight:600; margin:0; white-space:nowrap;
