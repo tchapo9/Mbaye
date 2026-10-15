@@ -98,7 +98,6 @@ tp1_webapp/
 ├── requirements.txt                          # Dépendances Python épinglées
 ├── static/
 │   └── moustique.png                         # Logo de l'application
-├── Documentation_TP1_Scanner_reseau_IA.docx  # Documentation illustrée (12 figures)
 ├── venv/                                     # Environnement virtuel (non versionné)
 └── .git/
 ```
